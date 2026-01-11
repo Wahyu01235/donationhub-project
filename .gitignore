@@ -1,19 +1,4 @@
-# File sensitif yang JANGAN diupload
-config.js
-.env
-*.secret.*
-private-keys.txt
-
-# Sistem operasi
-.DS_Store
-Thumbs.db
-
-# Editor/IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Log files
-*.log
-npm-debug.log*
+# Jangan upload file sensitif
+frontend/config-local.js
+*.env
+node_modules/
