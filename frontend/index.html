@@ -1,1 +1,231 @@
-ppp
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyCoin Donation - Sepolia Testnet</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h1>TinyCoin Donation</h1>
+                </div>
+                <div class="network-badge">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Sepolia Testnet</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONNECT WALLET SECTION -->
+        <section class="card" id="wallet-section">
+            <h2 class="section-title">
+                <i class="fas fa-wallet"></i>
+                Connect Wallet
+            </h2>
+            
+            <div class="wallet-container">
+                <button id="connect-btn" class="btn btn-primary">
+                    <i class="fas fa-plug"></i>
+                    Connect MetaMask
+                </button>
+                
+                <div id="wallet-info" class="wallet-info hidden">
+                    <div class="wallet-details">
+                        <div class="wallet-item">
+                            <span class="wallet-label">Address:</span>
+                            <span id="wallet-address" class="wallet-value">0x0000...0000</span>
+                            <div class="wallet-actions">
+                                <button class="copy-btn" id="copy-address" title="Copy address">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                                <button class="logout-btn" id="logout-btn" title="Disconnect wallet">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="wallet-item">
+                            <span class="wallet-label">Network:</span>
+                            <span id="network-status" class="status-badge status-success">
+                                <i class="fas fa-check-circle"></i>
+                                Connected
+                            </span>
+                        </div>
+                        
+                        <div class="wallet-item">
+                            <span class="wallet-label">TNC Balance:</span>
+                            <span id="tnc-balance" class="wallet-value balance">0.00 TNC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CREATE CAMPAIGN SECTION -->
+        <section class="card" id="create-campaign-section">
+            <h2 class="section-title">
+                <i class="fas fa-plus-circle"></i>
+                Create Campaign
+            </h2>
+            
+            <form id="create-campaign-form">
+                <div class="form-group">
+                    <label for="campaign-title">
+                        <i class="fas fa-heading"></i>
+                        Judul Campaign
+                    </label>
+                    <input 
+                        type="text" 
+                        id="campaign-title" 
+                        placeholder="Contoh: Bantu Pendidikan Anak Yatim"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="recipient-address">
+                        <i class="fas fa-user-circle"></i>
+                        Alamat Penerima (0x...)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="recipient-address" 
+                        placeholder="0x742d35Cc6634C0532925a3b844Bc9e..."
+                        required
+                    >
+                </div>
+                
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Creation Fee: <strong>1 TNC</strong></span>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" id="create-campaign-btn" class="btn btn-primary" disabled>
+                        <i class="fas fa-rocket"></i>
+                        Create Campaign
+                    </button>
+                </div>
+                
+                <div id="create-status" class="status-box hidden">
+                    <div class="status-content">
+                        <span id="create-status-text">Status akan muncul di sini...</span>
+                        <a id="create-tx-link" href="#" target="_blank" class="hidden">
+                            <i class="fas fa-external-link-alt"></i>
+                            View on Explorer
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- CAMPAIGNS LIST SECTION -->
+        <section class="card" id="campaigns-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i>
+                    Daftar Campaign
+                </h2>
+                <button id="refresh-campaigns-btn" class="btn btn-secondary" disabled>
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+            </div>
+            
+            <div id="campaigns-container" class="campaigns-container">
+                <div class="placeholder-text">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Silakan connect MetaMask untuk memuat campaign.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DONATE SECTION (SIMPLE VERSION - ONE-CLICK) -->
+        <section class="card" id="donate-section">
+            <h2 class="section-title">
+                <i class="fas fa-donate"></i>
+                Donate
+            </h2>
+            
+            <form id="donate-form">
+                <div class="form-group">
+                    <label for="selected-campaign">
+                        <i class="fas fa-hand-point-right"></i>
+                        Campaign Terpilih
+                    </label>
+                    <div id="selected-campaign-display" class="selected-campaign">
+                        <span id="selected-campaign-text">Klik "Donate" pada campaign di daftar</span>
+                    </div>
+                    <input type="hidden" id="selected-campaign-id" value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="donation-amount">
+                        <i class="fas fa-coins"></i>
+                        Jumlah Donasi (TNC)
+                    </label>
+                    <input 
+                        type="number" 
+                        id="donation-amount" 
+                        placeholder="Masukkan jumlah TNC"
+                        min="0.1"
+                        step="0.1"
+                        required
+                        disabled
+                    >
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" id="donate-btn" class="btn btn-success" disabled>
+                        <i class="fas fa-heart"></i>
+                        Donate Sekarang
+                    </button>
+                </div>
+                
+                <div id="donate-status" class="status-box hidden">
+                    <div class="status-content">
+                        <span id="donate-status-text">Status akan muncul di sini...</span>
+                        <a id="donate-tx-link" href="#" target="_blank" class="hidden">
+                            <i class="fas fa-external-link-alt"></i>
+                            View on Explorer
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>
+                <i class="fas fa-info-circle"></i>
+                Testnet Sepolia – hanya untuk simulasi
+            </p>
+            <p class="footer-note">
+                dApp demonstrasi untuk praktikum blockchain. Token TNC adalah ERC20 di jaringan Sepolia.
+            </p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <i id="toast-icon" class="fas fa-check-circle"></i>
+            <span id="toast-message">Pesan notifikasi</span>
+        </div>
+    </div>
+
+    <!-- Web3 Library -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+    <!-- JavaScript Files -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
